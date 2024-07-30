@@ -20,6 +20,20 @@ app.get("/movies", async (req, res) => {
   const users = result.rows;
   res.json(users);
 });
+app.get("/reviews", async (req, res) => {
+  const result = await db.query(`SELECT * FROM reviews ORDER BY id ASC`);
+  const reviews = result.rows;
+  res.json(reviews);
+});
+app.post("/userreviews", async (req, res) => {
+  console.log(req.body);
+  const { movie_id, username, review } = req.body;
+
+  const insertQuery =
+    "INSERT INTO reviews (username,review,movie_id) VALUES ($2, $3 ,$1)";
+  await db.query(insertQuery, [movie_id, username, review]);
+  res.json(req.body);
+});
 
 app.listen(Port, (req, res) => {
   console.log("we are on port 8080");

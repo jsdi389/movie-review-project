@@ -69,6 +69,26 @@ function loadMovieInfo(array) {
         divTXT.appendChild(star);
       }
     });
+    overlay.addEventListener("click", () => {
+      const inptMovieId = document.getElementById("movie_id");
+      inptMovieId.value = array[i].id;
+      console.log(inptMovieId);
+      const form = document.getElementById("review-form");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const formValues = Object.fromEntries(formData);
+        console.log(formValues);
+
+        const response = await fetch("http://localhost:8080/userreviews", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formValues),
+        });
+      });
+    });
   }
 }
 
