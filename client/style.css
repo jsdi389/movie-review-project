@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 * {
   box-sizing: border-box;
 }
@@ -53,4 +54,57 @@ body {
 }
 .checked {
   color: orange;
+=======
+body {
+  font-family: monospace;
+}
+
+h1 {
+  margin-left: 50px;
+}
+
+#navigation-bar {
+  display: flex;
+  justify-content: space-around;
+}
+
+#navigation-bar {
+  align-items: center;
+}
+
+#home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center;
+  text-align: center;
+}
+#homepage-buttons {
+  display: flex;
+  justify-content: space-around; /* Evenly space buttons */
+  width: 50%; /* Adjust as needed */
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+}
+
+#homepage-buttons button {
+  padding: 5px 10px; /* Add padding to buttons */
+}
+
+#main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center;
+  text-align: center;
+  margin-top: 20px;
+}
+
+#review-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center;
+  text-align: center;
+>>>>>>> 7fe4f728c94930f71a33ae82dde759e04c4dfb34
 }
