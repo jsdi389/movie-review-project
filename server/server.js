@@ -1,5 +1,5 @@
 import express from "express";
-import pg, { Pool } from "pg";
+import pg from "pg";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -14,6 +14,11 @@ const Port = 8080;
 
 app.get("/", (request, response) => {
   response.send("API is called");
+});
+app.get("/movies", async (req, res) => {
+  const result = await db.query(`SELECT * FROM movies ORDER BY id ASC`);
+  const users = result.rows;
+  res.json(users);
 });
 
 app.listen(Port, (req, res) => {
