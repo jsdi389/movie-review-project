@@ -30,14 +30,14 @@
 
     <div id="review-area">
       <h3>Reviews</h3>
-      <form id="review-form"></form>
-      <label>Movie Name</label>
-      <input name="movie-name" placeholder="Movie-Name" />
-      <label>Movie Review</label>
-      <input name="movie-review" placeholder="Movie-Review" />
-      <p id="review-body">text for reviews</p>
-      <button id="submit">Submitt</button>
-      <button id="delete">Delete</button>
+      <form id="review-form">
+        <input id="movie_id" type="hidden" name="movie_id" />
+        <label>User Name</label>
+        <input name="username" placeholder="UserName" />
+        <label>Movie Review</label>
+        <textarea name="review" placeholder="Movie-Review"></textarea>
+        <button id="submit">Submitt</button>
+      </form>
     </div>
   </body>
 </html>
