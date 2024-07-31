@@ -161,3 +161,21 @@ async function calculateAverageRatings(movies, reviews) {
 }
 
 getMovies();
+
+const list = document.getElementById("review-list");
+
+async function gettingReviews() {
+  const reviewsResponse = await fetch(
+    "http://localhost:8080/usernameAndReview"
+  );
+  const reviewResult = await reviewsResponse.json();
+  console.log(reviewResult);
+
+  for (let i = 0; i < reviewResult.length; i++) {
+    const reviewsSubmission = document.createElement("li");
+    reviewsSubmission.textContent = `${reviewResult[i].username} says:${reviewResult[i].review} about: ${reviewResult[i].moviename} Rating: ${reviewResult[i].user_rate}`;
+    list.appendChild(reviewsSubmission);
+  }
+}
+
+gettingReviews();
