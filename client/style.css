@@ -77,7 +77,7 @@ label:has(input:checked) {
 label:has(~ label > input:hover),
 label:has(input:hover) {
   color: #9d7614;
-
+}
 
 .movieSecttion {
   background-color: black;
@@ -107,7 +107,8 @@ label:has(input:hover) {
   width: 100%;
   opacity: 0;
   transition: 0.5s ease;
-  background-color: #008cba;
+  background-color: #07043995;
+  font-weight: 900;
 }
 
 .container:hover .overlay {
@@ -115,7 +116,7 @@ label:has(input:hover) {
 }
 
 .text {
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 20px;
   position: absolute;
   top: 50%;
