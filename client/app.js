@@ -173,7 +173,9 @@ async function gettingReviews() {
 
   for (let i = 0; i < reviewResult.length; i++) {
     const reviewsSubmission = document.createElement("li");
-    reviewsSubmission.textContent = `${reviewResult[i].username} says:${reviewResult[i].review} about: ${reviewResult[i].moviename} Rating: ${reviewResult[i].user_rate}`;
+    const p = document.createElement("p");
+    p.textContent = `${reviewResult[i].username} says:${reviewResult[i].review} about: ${reviewResult[i].moviename} Rating: ${reviewResult[i].user_rate}`;
+    reviewsSubmission.appendChild(p);
     list.appendChild(reviewsSubmission);
   }
 }
