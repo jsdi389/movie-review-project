@@ -9,7 +9,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
     <script type="module" src="./app.js" defer></script>
   </head>
   <body>
@@ -31,37 +30,69 @@
     <div id="review-area">
       <h3>Reviews</h3>
 
-      <form id="review-form"></form>
-      <label>Movie Name</label>
-      <input name="movie-name" placeholder="Movie-Name" />
-      <label>Movie Review</label>
-      <input name="movie-review" placeholder="Movie-Review" />
-      <p id="review-body">text for reviews</p>
-      <div class="ratingbox">
-        <label class="rbStar">
-          <input class="starBtn" type="radio" name="star-rating" value="1" />
-          <span>★</span>
-        </label>
-        <label class="rbStar">
-          <input class="starBtn" type="radio" name="star-rating" value="2" />
-          <span>★</span>
-        </label>
-        <label class="rbStar">
-          <input class="starBtn" type="radio" name="star-rating" value="3" />
-          <span>★</span>
-        </label>
-        <label class="rbStar">
-          <input class="starBtn" type="radio" name="star-rating" value="4" />
-          <span>★</span>
-        </label>
-        <label class="rbStar">
-          <input class="starBtn" type="radio" name="star-rating" value="5" />
-          <span>★</span>
-        </label>
-      </div>
-      <button id="submit">Submit</button>
-      <button id="delete">Delete</button>
- 
+      <form id="review-form">
+        <input name="movie_id" type="hidden" id="movie_id" />
+
+        <label>username</label>
+        <input name="username" placeholder="username" />
+        <label>Movie Review</label>
+        <textarea name="review" placeholder="Movie-Review"></textarea>
+        <p id="review-body">text for reviews</p>
+        <div class="ratingbox">
+          <label class="rbStar">
+            <input
+              id="star1"
+              class="starBtn"
+              type="radio"
+              name="star_rating"
+              value="1"
+            />
+            <span>★</span>
+          </label>
+          <label class="rbStar">
+            <input
+              id="star2"
+              class="starBtn"
+              type="radio"
+              name="star_rating"
+              value="2"
+            />
+            <span>★</span>
+          </label>
+          <label class="rbStar">
+            <input
+              id="star3"
+              class="starBtn"
+              type="radio"
+              name="star_rating"
+              value="3"
+            />
+            <span>★</span>
+          </label>
+          <label class="rbStar">
+            <input
+              id="star4"
+              class="starBtn"
+              type="radio"
+              name="star_rating"
+              value="4"
+            />
+            <span>★</span>
+          </label>
+          <label class="rbStar">
+            <input
+              id="star5"
+              class="starBtn"
+              type="radio"
+              name="star_rating"
+              value="5"
+            />
+            <span>★</span>
+          </label>
+        </div>
+
+        <button id="submit">Submit</button>
+      </form>
     </div>
   </body>
 </html>

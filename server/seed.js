@@ -32,4 +32,8 @@ db.query(`
     ('guest1', 'Not so bad', 1),
     ('guest2', 'Good', 2),
     ('guest3', 'So bad', 1);
+
+    
+     ALTER TABLE reviews
+    ADD COLUMN IF NOT EXISTS user_rate INTEGER DEFAULT 0;
 `);

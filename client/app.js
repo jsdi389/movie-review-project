@@ -2,17 +2,13 @@ const movieSection = document.getElementById("movieSection");
 const cardContainer = document.getElementById("cardContainer");
 
 async function getMovies() {
-  try {
-    const response = await fetch("http://localhost:8080/movies");
-    if (!response.ok) {
-      throw new Error("Network response was not ok " + response.statusText);
-    }
-    const result = await response.json();
-    console.log(result);
-    loadMovieInfo(result);
-  } catch (error) {
-    console.error("Fetching movies failed:", error);
-  }
+  const { movies, reviews } = await getMoviesAndReviews();
+
+  // Calculate average ratings and update the movies table
+  await calculateAverageRatings(movies, reviews);
+
+  console.log(movies);
+  loadMovieInfo(movies);
 }
 
 function resizeImage(src, width, height, callback) {
@@ -35,7 +31,7 @@ function resizeImage(src, width, height, callback) {
   };
 }
 
-function loadMovieInfo(array) {
+async function loadMovieInfo(array) {
   const cardContainer = document.getElementById("cardContainer");
 
   for (let i = 0; i < array.length; i++) {
@@ -70,14 +66,18 @@ function loadMovieInfo(array) {
       }
     });
     overlay.addEventListener("click", () => {
+      navigateToReviewForm();
       const inptMovieId = document.getElementById("movie_id");
-      inptMovieId.value = array[i].id;
+
       console.log(inptMovieId);
       const form = document.getElementById("review-form");
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+
+        inptMovieId.value = array[i].id;
         const formData = new FormData(form);
         const formValues = Object.fromEntries(formData);
+
         console.log(formValues);
 
         const response = await fetch("http://localhost:8080/userreviews", {
@@ -87,9 +87,77 @@ function loadMovieInfo(array) {
           },
           body: JSON.stringify(formValues),
         });
+        const data = await response.json();
+        console.log(`post message : ${data}`);
       });
     });
   }
+}
+function navigateToReviewForm() {
+  document.getElementById("review-form").style.display = "block";
+  // Optionally, scroll to the review form
+  document.getElementById("review-form").scrollIntoView({ behavior: "smooth" });
+}
+
+async function getMoviesAndReviews() {
+  const moviesResponse = await fetch("http://localhost:8080/movies");
+  const movies = await moviesResponse.json();
+
+  const reviewsResponse = await fetch("http://localhost:8080/reviews");
+  const reviews = await reviewsResponse.json();
+
+  return { movies, reviews };
+}
+async function calculateAverageRatings(movies, reviews) {
+  const movieRatings = {};
+
+  // Initialize movieRatings with empty objects
+  for (let i = 0; i < movies.length; i++) {
+    const movie_id = movies[i].id;
+    movieRatings[movie_id] = { totalRate: 0, count: 0 };
+  }
+
+  // Aggregate ratings for each movie
+  for (let i = 0; i < reviews.length; i++) {
+    const review = reviews[i];
+    const movie_id = review.movie_id;
+    if (movieRatings[movie_id]) {
+      movieRatings[movie_id].totalRate += review.user_rate;
+      movieRatings[movie_id].count += 1;
+    }
+  }
+
+  // Calculate average ratings and update the movies table
+  for (let i = 0; i < movies.length; i++) {
+    const movie_id = movies[i].id;
+    const ratingInfo = movieRatings[movie_id];
+    let averageRating = null;
+
+    if (ratingInfo && ratingInfo.count > 0) {
+      averageRating = ratingInfo.totalRate / ratingInfo.count;
+      averageRating = Math.round(averageRating);
+      console.log(`round ave is : ${averageRating}`);
+    }
+
+    // Prepare the update payload
+    const updatePayload = {
+      id: movie_id,
+      rate: averageRating,
+    };
+    console.log(`payload: ${updatePayload}`);
+    // Send the update request to the server
+    await fetch("http://localhost:8080/updatemovierating", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatePayload),
+    });
+
+    // Optionally, update the movie object with the new average rating
+    movies[i].averageRating = averageRating;
+  }
+  return movies;
 }
 
 getMovies();
