@@ -43,6 +43,13 @@ app.post("/updatemovierating", async (req, res) => {
   res.json({ success: true });
 });
 
+app.get("/usernameAndReview", async function (request, response) {
+  const query =
+    "SELECT movies.moviename, movies.rate AS movie_rate,  reviews.username,  reviews.user_rate, reviews.review  FROM movies INNER JOIN reviews ON movies.id = reviews.movie_id;";
+  const result = await db.query(query);
+  response.json(result.rows);
+});
+
 app.listen(Port, (req, res) => {
   console.log("we are on port 8080");
 });
