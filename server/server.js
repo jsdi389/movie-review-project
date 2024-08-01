@@ -53,6 +53,15 @@ app.get("/usernameAndReview", async function (request, response) {
   response.json(result.rows);
 });
 
+app.post("/moviesubmission", async (request, response) => {
+  console.log(request.body);
+  const { Description, imgURL, movieName, year } = request.body;
+  const insertQuery =
+    "INSERT INTO movies (moviename,description,rate,year,imageurl) VALUES ($4, $1 ,$3 ,$5, $2)";
+  await db.query(insertQuery, [Description, imgURL, 0, movieName, year]);
+  response.json({ message: "success" });
+});
+
 app.listen(Port, (req, res) => {
   console.log("we are on port 8080");
 });

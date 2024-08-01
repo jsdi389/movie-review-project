@@ -193,6 +193,33 @@ async function gettingReviews() {
     list.appendChild(reviewsSubmission);
   }
 }
+const formSection = document.getElementById("movie-submission-section");
+const popupButton = document.getElementById("popup");
+popupButton.addEventListener("click", function () {
+  formSection.classList.remove("dissapear");
+  popupButton.style.display = "none";
+});
+
+const formPopup = document.getElementById("addMovieForm");
+formPopup.addEventListener("submit", async function (event) {
+  console.log("We are here");
+  event.preventDefault();
+  const formData = new FormData(formPopup);
+  const formValues = Object.fromEntries(formData);
+  console.log(formValues);
+  const repsonse = await fetch("http://localhost:8080/moviesubmission", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formValues),
+  });
+
+  gettingReviews();
+  getMovies();
+  popupButton.style.display = "block";
+  formSection.style.display = "none";
+});
 
 gettingReviews();
 getMovies();
