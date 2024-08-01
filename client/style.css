@@ -212,6 +212,13 @@ button {
 }
 
 @media (min-width: 1024px) {
+  #cardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10%;
+  }
   #review-form {
     width: 700px;
   }
@@ -242,5 +249,8 @@ button {
 
   header {
     padding: 2%;
+  }
+  .checked {
+    color: orange;
   }
 }

@@ -31,7 +31,10 @@ app.post("/userreviews", async (req, res) => {
   const insertQuery =
     "INSERT INTO reviews (username,review,movie_id,user_rate) VALUES ($2, $3 ,$1,$4)";
   await db.query(insertQuery, [movie_id, username, review, star_rating]);
-  res.json(req.body);
+
+  const result = await db.query(`SELECT * FROM movies ORDER BY id ASC`);
+  const users = result.rows;
+  res.json(users);
 });
 app.post("/updatemovierating", async (req, res) => {
   const { id, rate } = req.body;
