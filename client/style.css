@@ -206,7 +206,7 @@ button {
   transform: scaleX(1);
 }
 
-#review-form {
+.review-form {
   display: flex;
   flex-direction: column;
 }
@@ -219,16 +219,16 @@ button {
     flex-wrap: wrap;
     margin-top: 10%;
   }
-  #review-form {
+  .review-form {
     width: 700px;
   }
 
-  #review-form input {
+  .review-form input {
     height: 30px;
     border: #042732 solid 1px;
   }
 
-  #review-form textarea {
+  .review-form textarea {
     height: 30px;
     border: #042732 solid 1px;
   }
@@ -253,4 +253,8 @@ button {
   .checked {
     color: orange;
   }
+}
+
+.dissapear {
+  display: none;
 }

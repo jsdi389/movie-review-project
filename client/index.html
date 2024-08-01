@@ -30,7 +30,7 @@
     <div id="review-area">
       <h3>Reviews</h3>
 
-      <form id="review-form">
+      <form id="review-form" class="review-form">
         <input name="movie_id" type="hidden" id="movie_id" />
 
         <label>username</label>
@@ -102,5 +102,36 @@
     <div class="list" id="review-submissions">
       <ul id="review-list"></ul>
     </div>
+
+    <section class="dissapear" id="movie-submission-section">
+      <form id="addMovieForm" class="review-form">
+        <label>Movie Name</label>
+        <input name="movieName" placeholder="Movie Name" required />
+        <label>Movie Image URL</label>
+        <input
+          id="movieInput"
+          name="imgURL"
+          placeholder="Movie Image"
+          required
+        />
+        <label>Movie Release Year</label>
+        <input
+          id="movieReleaseDate"
+          name="year"
+          placeholder="Enter Release Date"
+          required
+        />
+        <label>Description</label>
+        <textarea
+          name="Description"
+          id="movieDescription"
+          placeholder="Description"
+        ></textarea>
+
+        <button>Add Movies</button>
+      </form>
+    </section>
+
+    <button id="popup">Add Movies</button>
   </body>
 </html>
