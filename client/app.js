@@ -1,13 +1,16 @@
 const movieSection = document.getElementById("movieSection");
 const cardContainer = document.getElementById("cardContainer");
+let currentMovieId = null;
 
+const textarea = document.getElementById("textarea");
 async function getMovies() {
   const { movies, reviews } = await getMoviesAndReviews();
 
   // Calculate average ratings and update the movies table
-  await calculateAverageRatings(movies, reviews);
+  const res = await calculateAverageRatings(movies, reviews);
 
   console.log(movies);
+  console.log(res);
   loadMovieInfo(movies);
 }
 
@@ -22,7 +25,7 @@ function resizeImage(src, width, height, callback) {
     canvas.width = width;
     canvas.height = height;
     ctx.drawImage(img, 0, 0, width, height);
-    const resizedImage = canvas.toDataURL("image/png");
+    const resizedImage = canvas.toDataURL("image/jpg");
     callback(resizedImage);
   };
 
@@ -32,69 +35,79 @@ function resizeImage(src, width, height, callback) {
 }
 
 async function loadMovieInfo(array) {
-  const cardContainer = document.getElementById("cardContainer");
-
+  cardContainer.innerHTML = "";
   for (let i = 0; i < array.length; i++) {
     const card = document.createElement("div");
     const overlay = document.createElement("div");
     const divTXT = document.createElement("div");
     const title = document.createElement("h1");
     const description = document.createElement("p");
+    const press = document.createElement("p");
+    press.textContent = "press to add review";
     description.textContent = array[i].description;
     title.textContent = array[i].moviename;
+
     overlay.classList.add("overlay");
     divTXT.classList.add("text");
     card.classList.add("container");
+    const resizedImg = document.createElement("img");
     // Resize the movie image before appending it to show the cards in same size
     resizeImage(array[i].imageurl, 300, 450, (resizedImageSrc) => {
-      const resizedImg = new Image();
       resizedImg.src = resizedImageSrc;
-      card.appendChild(resizedImg);
-      cardContainer.appendChild(card);
-
-      overlay.appendChild(divTXT);
-      card.appendChild(overlay);
-      divTXT.appendChild(title);
-      divTXT.appendChild(description);
-      for (let j = 0; j < array[i].rate; j++) {
-        const star = document.createElement("span");
-        star.classList.add("fa");
-        star.classList.add("fa-star");
-        star.classList.add("checked");
-
-        divTXT.appendChild(star);
-      }
     });
+    cardContainer.appendChild(card);
+    card.appendChild(resizedImg);
+
+    card.appendChild(overlay);
+    overlay.appendChild(divTXT);
+    divTXT.appendChild(title);
+    divTXT.appendChild(description);
+    divTXT.appendChild(press);
+    for (let j = 0; j < array[i].rate; j++) {
+      //counting rates and add star as much as rate amount
+      const star = document.createElement("span");
+      star.classList.add("fa");
+      star.classList.add("fa-star");
+      star.classList.add("checked");
+
+      divTXT.appendChild(star);
+    }
     overlay.addEventListener("click", () => {
       navigateToReviewForm();
-      const inptMovieId = document.getElementById("movie_id");
-
-      console.log(inptMovieId);
-      const form = document.getElementById("review-form");
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        inptMovieId.value = array[i].id;
-        const formData = new FormData(form);
-        const formValues = Object.fromEntries(formData);
-
-        console.log(formValues);
-
-        const response = await fetch("http://localhost:8080/userreviews", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formValues),
-        });
-        const data = await response.json();
-        console.log(`post message : ${data}`);
-      });
+      currentMovieId = array[i].id;
     });
   }
 }
+
+const inptMovieId = document.getElementById("movie_id");
+
+console.log(inptMovieId);
+const form = document.getElementById("review-form");
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  inptMovieId.value = currentMovieId;
+  const formData = new FormData(form);
+  const formValues = Object.fromEntries(formData);
+
+  console.log(formValues);
+
+  const response = await fetch("http://localhost:8080/userreviews", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formValues),
+  });
+
+  const data = await response.json();
+  console.log(` updated : ${data}`);
+  textarea.value = "";
+  getMovies();
+  gettingReviews();
+});
+
 function navigateToReviewForm() {
-  document.getElementById("review-form").style.display = "block";
   // Optionally, scroll to the review form
   document.getElementById("review-form").scrollIntoView({ behavior: "smooth" });
 }
@@ -138,7 +151,9 @@ async function calculateAverageRatings(movies, reviews) {
       averageRating = Math.round(averageRating);
       console.log(`round ave is : ${averageRating}`);
     }
-
+    if (averageRating == null) {
+      averageRating = 0;
+    }
     // Prepare the update payload
     const updatePayload = {
       id: movie_id,
@@ -155,16 +170,15 @@ async function calculateAverageRatings(movies, reviews) {
     });
 
     // Optionally, update the movie object with the new average rating
-    movies[i].averageRating = averageRating;
+    movies[i].rate = averageRating;
   }
   return movies;
 }
 
-getMovies();
-
 const list = document.getElementById("review-list");
 
 async function gettingReviews() {
+  list.innerHTML = "";
   const reviewsResponse = await fetch(
     "http://localhost:8080/usernameAndReview"
   );
@@ -181,3 +195,4 @@ async function gettingReviews() {
 }
 
 gettingReviews();
+getMovies();
